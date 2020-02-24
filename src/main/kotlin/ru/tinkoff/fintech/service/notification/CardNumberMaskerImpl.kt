@@ -1,8 +1,22 @@
 package ru.tinkoff.fintech.service.notification
 
+import java.lang.Integer.min
+
 class CardNumberMaskerImpl : CardNumberMasker {
 
     override fun mask(cardNumber: String, maskChar: Char, start: Int, end: Int): String {
-        return cardNumber.replaceRange(start, end, maskChar.toString().repeat(end - start + 1))
+
+        if (start > end) {
+        }
+
+        if (cardNumber.equals("")) {
+            return ""
+        } else {
+            return cardNumber.replaceRange(
+                start,
+                min(end, cardNumber.length),
+                maskChar.toString().repeat(min(end, cardNumber.length) - start)
+            )
+        }
     }
 }
