@@ -3,7 +3,7 @@ package ru.tinkoff.fintech.model
 import java.time.LocalDateTime
 
 data class NotificationMessageInfo(
-    var name: String,
+    val name: String,
     val cardNumber: String,
     val cashback: Double,
     val transactionSum: Double,

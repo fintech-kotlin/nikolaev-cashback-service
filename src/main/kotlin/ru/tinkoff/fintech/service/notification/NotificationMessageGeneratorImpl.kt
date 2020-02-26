@@ -8,15 +8,18 @@ class NotificationMessageGeneratorImpl(
 ) : NotificationMessageGenerator {
 
     override fun generateMessage(notificationMessageInfo: NotificationMessageInfo): String {
-        return "Уважаемый, " + notificationMessageInfo.name + "!\n" +
-                "Спешим Вам сообщить, что на карту " +
-                cardNumberMasker.mask(notificationMessageInfo.cardNumber, '#', 0, 12) +
-                "\nначислен cashback в размере " + notificationMessageInfo.cashback.toString() +
-                "\nза категорию " + notificationMessageInfo.category + ".\nСпасибо за покупку " + notificationMessageInfo.transactionDate.format(
-            DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        ) + "T" + notificationMessageInfo.transactionDate.format(
-            DateTimeFormatter.ofPattern("HH:mm")
-        )
+        return "Уважаемый, ${notificationMessageInfo.name}!\n" +
+                "Спешим Вам сообщить, что на карту ${cardNumberMasker.mask(
+                    notificationMessageInfo.cardNumber,
+                    '#',
+                    0,
+                    12
+                )}\nначислен cashback в размере " + notificationMessageInfo.cashback.toString() +
+                "\nза категорию ${notificationMessageInfo.category}.\nСпасибо за покупку ${notificationMessageInfo.transactionDate.format(
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                )}T${notificationMessageInfo.transactionDate.format(
+                    DateTimeFormatter.ofPattern("HH:mm")
+                )}"
 
     }
 }
