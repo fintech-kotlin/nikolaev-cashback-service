@@ -11,8 +11,27 @@ internal const val MCC_BEER = 5921
 
 class CashbackCalculatorImpl : CashbackCalculator {
 
+    private val cashbackRules: CashbackRulesImpl = CashbackRulesImpl()
+
     override fun calculateCashback(transactionInfo: TransactionInfo): Double {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        var cashbackAmount: Double = 0.0
+        when (transactionInfo.loyaltyProgramName) {
+            LOYALTY_PROGRAM_BLACK -> cashbackAmount = cashbackRules.loyaltyBlack(transactionInfo)
+            LOYALTY_PROGRAM_ALL -> if (transactionInfo.mccCode == MCC_SOFTWARE) cashbackAmount =
+                cashbackRules.loyaltyAllMccSoftware(transactionInfo)
+            LOYALTY_PROGRAM_BEER -> if (transactionInfo.mccCode == MCC_BEER) cashbackAmount =
+                cashbackRules.loyaltyAndMccBeer(transactionInfo)
+        }
+        cashbackAmount += cashbackRules.dividedByNumber(transactionInfo)
+        return if (MAX_CASH_BACK < transactionInfo.cashbackTotalValue + cashbackAmount) {
+            if (MAX_CASH_BACK <= transactionInfo.cashbackTotalValue) {
+                0.0
+            } else {
+                MAX_CASH_BACK - transactionInfo.cashbackTotalValue
+            }
+        } else {
+            Math.round(cashbackAmount * 100) / 100.toDouble()
+        }
     }
 
 }
